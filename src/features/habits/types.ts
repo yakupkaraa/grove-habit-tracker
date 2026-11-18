@@ -12,7 +12,7 @@ export type Habit = {
   color: string;
   repeatDays: Weekday[];
   reminderTime?: string; // "HH:mm"
-  createdAt: string; // ISO string
+  createdAt: string; // local YYYY-MM-DD
 };
 
 export type Completion = {
