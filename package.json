@@ -52,6 +52,7 @@
   "private": true,
   "jest": {
     "preset": "jest-expo",
+    "globalSetup": "<rootDir>/jest.global-setup.ts",
     "testMatch": [
       "<rootDir>/src/**/*.test.[jt]s?(x)"
     ],
