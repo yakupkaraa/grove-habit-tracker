@@ -13,6 +13,8 @@ type HabitInput = Omit<Habit, "id" | "createdAt">;
 type HabitPatch = Partial<HabitInput>;
 
 type HabitState = { habits: Habit[]; completions: Completion[] };
+// `hydrated` is runtime-only: it is never persisted (see partialize).
+type HabitMeta = { hydrated: boolean };
 type HabitActions = {
   addHabit: (input: HabitInput) => void;
   removeHabit: (id: string) => void;
@@ -95,10 +97,11 @@ function sanitize(persisted: unknown): HabitState {
 export function createHabitStore(deps: Partial<StoreDeps> = {}) {
   const { now, generateId, storage } = { ...DEFAULT_DEPS, ...deps };
 
-  const store = create<HabitState & HabitActions>()(
+  const store = create<HabitState & HabitMeta & HabitActions>()(
     persist(
       (set) => ({
         ...EMPTY_STATE,
+        hydrated: false,
 
         addHabit: (input) =>
           set((state) => ({
@@ -153,6 +156,8 @@ export function createHabitStore(deps: Partial<StoreDeps> = {}) {
           persisted === undefined ? current : { ...current, ...sanitize(persisted) },
         onRehydrateStorage: () => (_state, error) => {
           if (error) store.setState(EMPTY_STATE);
+          // zustand's own hasHydrated() never turns true after an error, so we track it.
+          store.setState({ hydrated: true });
         },
       },
     ),

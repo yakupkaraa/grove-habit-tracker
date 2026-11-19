@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import type { StateStorage } from "zustand/middleware";
 import { createHabitStore, HABIT_STORAGE_KEY } from "./habit-store";
 
 const NOW = new Date(2026, 10, 18, 9, 30);
@@ -371,6 +372,50 @@ describe("persist", () => {
 
     await store.persist.rehydrate();
 
+    expect(store.getState().habits).toEqual([]);
+  });
+});
+
+function deferredStorage() {
+  let release: (value: string | null) => void = () => {};
+  const pending = new Promise<string | null>((resolve) => {
+    release = resolve;
+  });
+  const storage: StateStorage = {
+    getItem: () => pending,
+    setItem: () => undefined,
+    removeItem: () => undefined,
+  };
+  return { storage, release };
+}
+
+describe("hydration", () => {
+  it("is not hydrated before the persisted state has loaded", () => {
+    const { storage } = deferredStorage();
+
+    const store = createHabitStore({ storage });
+
+    expect(store.getState().hydrated).toBe(false);
+  });
+
+  it("becomes hydrated when rehydration finishes", async () => {
+    const { storage, release } = deferredStorage();
+    const store = createHabitStore({ storage });
+
+    release(null);
+    await nextTick();
+
+    expect(store.getState().hydrated).toBe(true);
+  });
+
+  it("becomes hydrated even when the stored value is corrupted", async () => {
+    const { storage, release } = deferredStorage();
+    const store = createHabitStore({ storage });
+
+    release("{not json");
+    await nextTick();
+
+    expect(store.getState().hydrated).toBe(true);
     expect(store.getState().habits).toEqual([]);
   });
 });

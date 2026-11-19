@@ -49,3 +49,7 @@ export function filterByTimeOfDay(
   if (filter === "all") return [...items];
   return items.filter((item) => getTimeOfDay(item.habit.reminderTime) === filter);
 }
+
+export function getHighestStreak(items: readonly TodayItem[]): number {
+  return Math.max(0, ...items.map((item) => item.streak));
+}

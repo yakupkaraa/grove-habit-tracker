@@ -1,22 +1,9 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { useHabitStore } from "../store/habit-store";
-import type { Habit, Weekday } from "../types";
+import { makeHabit } from "../test-utils";
 import { useTodayHabits } from "./use-today-habits";
 
 const TODAY = "2026-11-18"; // Wednesday
-const ALL_DAYS: Weekday[] = [0, 1, 2, 3, 4, 5, 6];
-
-function makeHabit(id: string, overrides: Partial<Habit> = {}): Habit {
-  return {
-    id,
-    name: `Habit ${id}`,
-    icon: "water",
-    color: "#2F6B45",
-    repeatDays: ALL_DAYS,
-    createdAt: "2026-01-01",
-    ...overrides,
-  };
-}
 
 beforeEach(() => {
   useHabitStore.setState({ habits: [], completions: [] });

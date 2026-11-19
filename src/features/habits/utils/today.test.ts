@@ -1,25 +1,14 @@
-import type { Completion, Habit, Weekday } from "../types";
+import { makeHabit } from "../test-utils";
+import type { Completion } from "../types";
 import {
   filterByTimeOfDay,
+  getHighestStreak,
   getTimeOfDay,
   getTodayItems,
   type TodayItem,
 } from "./today";
 
 const TODAY = "2026-11-18"; // Wednesday
-const ALL_DAYS: Weekday[] = [0, 1, 2, 3, 4, 5, 6];
-
-function makeHabit(id: string, overrides: Partial<Habit> = {}): Habit {
-  return {
-    id,
-    name: `Habit ${id}`,
-    icon: "water",
-    color: "#2F6B45",
-    repeatDays: ALL_DAYS,
-    createdAt: "2026-01-01",
-    ...overrides,
-  };
-}
 
 function completion(habitId: string, date: string): Completion {
   return { habitId, date };
@@ -242,5 +231,21 @@ describe("filterByTimeOfDay", () => {
     const items = [item("a", "08:00"), item("b")];
 
     expect(filterByTimeOfDay(items, "evening")).toEqual([]);
+  });
+});
+
+describe("getHighestStreak", () => {
+  it("returns 0 when there are no items", () => {
+    expect(getHighestStreak([])).toBe(0);
+  });
+
+  it("returns the highest current streak among the items", () => {
+    const items = [
+      { ...item("a"), streak: 3 },
+      { ...item("b"), streak: 12 },
+      { ...item("c"), streak: 5 },
+    ];
+
+    expect(getHighestStreak(items)).toBe(12);
   });
 });
