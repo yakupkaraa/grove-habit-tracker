@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
-import { FilterChip } from "./filter-chip";
+import { FilterChip } from "../filter-chip";
 
 describe("FilterChip", () => {
   it("shows its label", async () => {

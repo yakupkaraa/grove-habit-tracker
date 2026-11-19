@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-native";
-import { useHabitStore } from "../store/habit-store";
-import { useHabitForm } from "./use-habit-form";
+import { useHabitStore } from "../../store/habit-store";
+import { useHabitForm } from "../use-habit-form";
 
 beforeEach(() => {
   useHabitStore.setState({ habits: [], completions: [], hydrated: true });

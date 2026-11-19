@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { AppState, type AppStateStatus } from "react-native";
-import { useToday } from "./use-today";
+import { useToday } from "../use-today";
 
 // AppState is a native boundary: jest-expo mocks addEventListener, so we grab the
 // handler the hook registered and call it ourselves.

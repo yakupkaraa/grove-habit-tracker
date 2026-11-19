@@ -1,4 +1,4 @@
-import { validateHabitInput } from "./habit-input";
+import { validateHabitInput } from "../habit-input";
 
 describe("validateHabitInput", () => {
   it("returns no errors for a valid name and at least one day", () => {

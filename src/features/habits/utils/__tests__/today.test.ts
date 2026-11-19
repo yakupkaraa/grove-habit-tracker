@@ -1,12 +1,12 @@
-import { makeHabit } from "../test-utils";
-import type { Completion } from "../types";
+import { makeHabit } from "../../test-utils";
+import type { Completion } from "../../types";
 import {
   filterByTimeOfDay,
   getHighestStreak,
   getTimeOfDay,
   getTodayItems,
   type TodayItem,
-} from "./today";
+} from "../today";
 
 const TODAY = "2026-11-18"; // Wednesday
 

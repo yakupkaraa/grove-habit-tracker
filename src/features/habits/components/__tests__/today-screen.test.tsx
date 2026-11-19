@@ -1,10 +1,10 @@
 import { act, render, screen, userEvent } from "@testing-library/react-native";
 import { router } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useHabitStore } from "../store/habit-store";
-import { makeHabit } from "../test-utils";
-import type { Completion, Habit } from "../types";
-import { TodayScreen } from "./today-screen";
+import { useHabitStore } from "../../store/habit-store";
+import { makeHabit } from "../../test-utils";
+import type { Completion, Habit } from "../../types";
+import { TodayScreen } from "../today-screen";
 
 // expo-router is a navigation boundary; we only check where we navigate.
 jest.mock("expo-router", () => ({ router: { push: jest.fn() } }));

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { StateStorage } from "zustand/middleware";
-import { createHabitStore, HABIT_STORAGE_KEY } from "./habit-store";
+import { createHabitStore, HABIT_STORAGE_KEY } from "../habit-store";
 
 const NOW = new Date(2026, 10, 18, 9, 30);
 

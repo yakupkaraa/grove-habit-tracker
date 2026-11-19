@@ -1,4 +1,4 @@
-import { formatRepeatDays } from "./repeat-label";
+import { formatRepeatDays } from "../repeat-label";
 
 describe("formatRepeatDays", () => {
   it('returns "Her gün" when all seven days are selected', () => {

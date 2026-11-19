@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-native";
-import { useHabitStore } from "../store/habit-store";
-import { useHydrated } from "./use-hydrated";
+import { useHabitStore } from "../../store/habit-store";
+import { useHydrated } from "../use-hydrated";
 
 describe("useHydrated", () => {
   it("returns true when the store has already hydrated", async () => {

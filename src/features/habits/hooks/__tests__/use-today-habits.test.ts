@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react-native";
-import { useHabitStore } from "../store/habit-store";
-import { makeHabit } from "../test-utils";
-import { useTodayHabits } from "./use-today-habits";
+import { useHabitStore } from "../../store/habit-store";
+import { makeHabit } from "../../test-utils";
+import { useTodayHabits } from "../use-today-habits";
 
 const TODAY = "2026-11-18"; // Wednesday
 

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import { SummaryCard } from "./summary-card";
+import { SummaryCard } from "../summary-card";
 
 describe("SummaryCard", () => {
   it("shows done and total", async () => {

@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
-import { TodayHeader } from "./today-header";
+import { TodayHeader } from "../today-header";
 
 describe("TodayHeader", () => {
   it("shows the greeting", async () => {

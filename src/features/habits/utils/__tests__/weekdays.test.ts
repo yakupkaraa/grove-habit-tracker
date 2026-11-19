@@ -1,5 +1,5 @@
-import type { Weekday } from "../types";
-import { toggleWeekday } from "./weekdays";
+import type { Weekday } from "../../types";
+import { toggleWeekday } from "../weekdays";
 
 describe("toggleWeekday", () => {
   it("adds a day that is not selected", () => {

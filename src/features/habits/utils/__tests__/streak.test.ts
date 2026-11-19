@@ -1,5 +1,5 @@
-import type { Weekday } from "../types";
-import { calculateCurrentStreak, calculateLongestStreak } from "./streak";
+import type { Weekday } from "../../types";
+import { calculateCurrentStreak, calculateLongestStreak } from "../streak";
 
 const ALL_DAYS: Weekday[] = [0, 1, 2, 3, 4, 5, 6];
 const WEEKDAYS: Weekday[] = [1, 2, 3, 4, 5];

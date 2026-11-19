@@ -1,4 +1,4 @@
-import { formatTime, parseTime } from "./time";
+import { formatTime, parseTime } from "../time";
 
 describe("formatTime", () => {
   it("formats a date as zero-padded HH:mm", () => {

@@ -1,6 +1,6 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
-import type { TodayItem } from "../utils/today";
-import { HabitRow } from "./habit-row";
+import type { TodayItem } from "../../utils/today";
+import { HabitRow } from "../habit-row";
 
 function makeItem(overrides: Partial<TodayItem["habit"]> = {}, rest: Partial<TodayItem> = {}): TodayItem {
   return {

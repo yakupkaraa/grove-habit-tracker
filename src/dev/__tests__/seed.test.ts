@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react-native";
 import { getTodayItems, useHabitStore } from "@/features/habits";
-import { seedWhenHydrated } from "./seed";
+import { seedWhenHydrated } from "../seed";
 
 const TODAY = "2026-11-18";
 

@@ -1,5 +1,5 @@
-import type { Completion, Habit, Weekday } from "../types";
-import { calculateHabitRate, getDayStats, getRangeStats } from "./stats";
+import type { Completion, Habit, Weekday } from "../../types";
+import { calculateHabitRate, getDayStats, getRangeStats } from "../stats";
 
 type TestHabit = Pick<Habit, "id" | "repeatDays" | "createdAt">;
 

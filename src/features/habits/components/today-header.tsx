@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { RoundIconButton } from "@/components/ui/round-icon-button";
 import { colors } from "@/theme/colors";
 
 type TodayHeaderProps = {
@@ -16,14 +17,11 @@ export function TodayHeader({ streak, onPressSettings }: TodayHeaderProps) {
           <Ionicons name="flame" size={18} color={colors.ink} />
           <Text style={styles.streakText}>{streak} gün</Text>
         </View>
-        <Pressable
-          accessibilityRole="button"
+        <RoundIconButton
+          icon="settings-outline"
           accessibilityLabel="Ayarlar"
           onPress={onPressSettings}
-          style={styles.roundButton}
-        >
-          <Ionicons name="settings-outline" size={20} color={colors.ink} />
-        </Pressable>
+        />
       </View>
     </View>
   );
@@ -37,14 +35,6 @@ const styles = StyleSheet.create({
   },
   greeting: { fontSize: 17, fontWeight: "600", color: colors.ink },
   right: { flexDirection: "row", alignItems: "center", gap: 8 },
-  roundButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.card,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   streakPill: {
     flexDirection: "row",
     alignItems: "center",

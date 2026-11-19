@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
-import { TodayEmptyState } from "./today-empty-state";
+import { TodayEmptyState } from "../today-empty-state";
 
 describe("TodayEmptyState", () => {
   it("shows the empty message", async () => {

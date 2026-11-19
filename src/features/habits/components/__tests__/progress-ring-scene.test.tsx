@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import { ProgressRingScene } from "./progress-ring-scene";
+import { ProgressRingScene } from "../progress-ring-scene";
 
 describe("ProgressRingScene", () => {
   it("exposes the progress as a percentage", async () => {

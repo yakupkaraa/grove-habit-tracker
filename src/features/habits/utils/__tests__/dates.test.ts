@@ -1,5 +1,5 @@
-import type { Weekday } from "../types";
-import { addDays, getWeekday, isScheduledOn, toDateKey } from "./dates";
+import type { Weekday } from "../../types";
+import { addDays, getWeekday, isScheduledOn, toDateKey } from "../dates";
 
 describe("toDateKey", () => {
   it("formats a date as YYYY-MM-DD", () => {
