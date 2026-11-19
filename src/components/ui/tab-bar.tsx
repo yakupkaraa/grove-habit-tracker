@@ -40,9 +40,11 @@ export function TabBar({ state, descriptors, navigateToTab }:BottomTabBarProps) 
         );
       })}
 
-      <Pressable style={styles.fab} onPress={() => router.push("/habit/new")}>
-        <Ionicons name="add" size={32} color={colors.ink} />
-      </Pressable>
+      <View style={styles.fabSlot} pointerEvents="box-none">
+        <Pressable style={styles.fab} onPress={() => router.push("/habit/new")}>
+          <Ionicons name="add" size={32} color={colors.ink} />
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -68,11 +70,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   label: { fontSize: 11 },
+  // Bar'ın paddingHorizontal'ı absolute yüzdeleri kaydırdığı için FAB, padding'siz tam genişlikte bir slot içinde ortalanır.
+  fabSlot: { position: "absolute", left: 0, right: 0, top: -26, alignItems: "center" },
   fab: {
-    position: "absolute",
-    left: "50%",
-    top: -26,
-    marginLeft: -35,
     width: 70,
     height: 70,
     borderRadius: 35,
