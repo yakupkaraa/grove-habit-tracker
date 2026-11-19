@@ -1,15 +1,11 @@
 import type { Completion, Habit } from "../types";
-import { addDays, isScheduledOn } from "./dates";
+import { addDays, isPlannedOn } from "./dates";
 
 type Schedule = Pick<Habit, "repeatDays" | "createdAt">;
 type StatsHabit = Schedule & Pick<Habit, "id">;
 type DayStats = { planned: number; done: number };
 type DayEntry = DayStats & { date: string };
 type RangeStats = DayStats & { days: DayEntry[]; rate: number };
-
-function isPlannedOn(habit: Schedule, date: string): boolean {
-  return habit.createdAt <= date && isScheduledOn(habit, date);
-}
 
 function toRate(done: number, planned: number): number {
   return planned === 0 ? 0 : done / planned;

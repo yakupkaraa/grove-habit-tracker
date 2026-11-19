@@ -32,3 +32,10 @@ export function isScheduledOn(
 ): boolean {
   return habit.repeatDays.includes(getWeekday(dateKey));
 }
+
+export function isPlannedOn(
+  habit: Pick<Habit, "repeatDays" | "createdAt">,
+  dateKey: string,
+): boolean {
+  return habit.createdAt <= dateKey && isScheduledOn(habit, dateKey);
+}
