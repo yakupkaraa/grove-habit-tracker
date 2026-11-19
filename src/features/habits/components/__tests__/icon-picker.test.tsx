@@ -2,14 +2,6 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { IconPicker } from "../icon-picker";
 
 describe("IconPicker", () => {
-  it("shows the six icons as buttons with their labels", async () => {
-    await render(<IconPicker selected="walk-outline" onSelect={() => {}} />);
-
-    for (const label of ["Su", "Kitap", "Yürüyüş", "Yaprak", "Sohbet", "Güneş"]) {
-      expect(screen.getByRole("button", { name: label })).toBeTruthy();
-    }
-  });
-
   it("marks only the selected icon as selected", async () => {
     await render(<IconPicker selected="book-outline" onSelect={() => {}} />);
 

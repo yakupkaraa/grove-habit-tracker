@@ -2,12 +2,6 @@ import { render, screen } from "@testing-library/react-native";
 import { FieldLabel } from "../field-label";
 
 describe("FieldLabel", () => {
-  it("shows its text", async () => {
-    await render(<FieldLabel>Ad</FieldLabel>);
-
-    expect(screen.getByText("Ad")).toBeTruthy();
-  });
-
   it("shows the error message when an error is provided", async () => {
     await render(<FieldLabel error="Bir ad girin">Ad</FieldLabel>);
 

@@ -5,6 +5,7 @@ export { addDays, toDateKey } from "./utils/dates";
 export { FilterChip } from "./components/filter-chip";
 export { HabitRow } from "./components/habit-row";
 export { SummaryCard } from "./components/summary-card";
+export { NewHabitScreen } from "./components/new-habit-screen";
 export { TodayEmptyState } from "./components/today-empty-state";
 export { TodayHeader } from "./components/today-header";
 export { TodayScreen } from "./components/today-screen";

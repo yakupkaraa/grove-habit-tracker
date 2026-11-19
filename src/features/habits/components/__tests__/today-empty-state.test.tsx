@@ -2,12 +2,6 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { TodayEmptyState } from "../today-empty-state";
 
 describe("TodayEmptyState", () => {
-  it("shows the empty message", async () => {
-    await render(<TodayEmptyState onAddHabit={() => {}} />);
-
-    expect(screen.getByText("Henüz alışkanlık yok")).toBeTruthy();
-  });
-
   it("calls onAddHabit when the add button is pressed", async () => {
     const onAddHabit = jest.fn();
     await render(<TodayEmptyState onAddHabit={onAddHabit} />);

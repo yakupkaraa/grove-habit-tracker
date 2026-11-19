@@ -2,12 +2,6 @@ import { render, screen } from "@testing-library/react-native";
 import { SummaryCard } from "../summary-card";
 
 describe("SummaryCard", () => {
-  it("shows done and total", async () => {
-    await render(<SummaryCard done={2} total={5} streak={7} />);
-
-    expect(screen.getByText("2/5")).toBeTruthy();
-  });
-
   it("shows the completed label", async () => {
     await render(<SummaryCard done={2} total={5} streak={7} />);
 

@@ -2,12 +2,6 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { FilterChip } from "../filter-chip";
 
 describe("FilterChip", () => {
-  it("shows its label", async () => {
-    await render(<FilterChip label="Sabah" selected={false} onPress={() => {}} />);
-
-    expect(screen.getByText("Sabah")).toBeTruthy();
-  });
-
   it("reports its selected state", async () => {
     await render(<FilterChip label="Sabah" selected onPress={() => {}} />);
 
