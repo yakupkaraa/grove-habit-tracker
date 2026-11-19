@@ -1,3 +1,4 @@
+import { HABIT_NAME_MAX_LENGTH } from "../../constants";
 import { validateHabitInput } from "../habit-input";
 
 describe("validateHabitInput", () => {
@@ -32,5 +33,19 @@ describe("validateHabitInput", () => {
 
   it("accepts a valid name with surrounding whitespace", () => {
     expect(validateHabitInput({ name: "  Su iç  ", repeatDays: [1] })).toEqual({});
+  });
+
+  it("rejects a name longer than the limit", () => {
+    const name = "a".repeat(HABIT_NAME_MAX_LENGTH + 1);
+
+    expect(validateHabitInput({ name, repeatDays: [1] })).toEqual({
+      name: `Ad en fazla ${HABIT_NAME_MAX_LENGTH} karakter olabilir`,
+    });
+  });
+
+  it("accepts a name exactly at the limit", () => {
+    const name = "a".repeat(HABIT_NAME_MAX_LENGTH);
+
+    expect(validateHabitInput({ name, repeatDays: [1] })).toEqual({});
   });
 });

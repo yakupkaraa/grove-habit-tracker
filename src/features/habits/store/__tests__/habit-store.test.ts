@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { StateStorage } from "zustand/middleware";
+import { HABIT_NAME_MAX_LENGTH } from "../../constants";
 import { createHabitStore, HABIT_STORAGE_KEY } from "../habit-store";
 
 const NOW = new Date(2026, 10, 18, 9, 30);
@@ -419,6 +420,21 @@ describe("persist", () => {
     await store.persist.rehydrate();
 
     expect(store.getState().completions).toEqual([valid]);
+  });
+
+  it("keeps stored habits whose name is longer than today's input limit", async () => {
+    const longName = "a".repeat(HABIT_NAME_MAX_LENGTH + 20);
+    const completion = { habitId: "h1", date: "2026-11-18" };
+    await storeRaw({
+      habits: [{ ...storedHabit, name: longName }],
+      completions: [completion],
+    });
+    const store = setup();
+
+    await store.persist.rehydrate();
+
+    expect(store.getState().habits.map((h) => h.name)).toEqual([longName]);
+    expect(store.getState().completions).toEqual([completion]);
   });
 
   it("falls back to empty state when the stored version is unknown", async () => {

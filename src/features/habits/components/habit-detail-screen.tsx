@@ -85,7 +85,12 @@ export function HabitDetailScreen({ id, today }: HabitDetailScreenProps) {
           <View style={styles.iconCircle}>
             <Ionicons name={habit.icon} size={30} color={colors.ink} />
           </View>
-          <Text accessibilityRole="header" style={styles.name}>
+          <Text
+            accessibilityRole="header"
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.name}
+          >
             {habit.name}
           </Text>
         </View>

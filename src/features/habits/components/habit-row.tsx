@@ -37,8 +37,12 @@ export const HabitRow = memo(function HabitRow({ item, onToggle, onOpen }: Habit
           <Ionicons name={habit.icon} size={20} color={colors.ink} />
         </View>
         <View style={styles.texts}>
-          <Text style={styles.name}>{habit.name}</Text>
-          <Text style={styles.subtitle}>{buildSubtitle(item)}</Text>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {habit.name}
+          </Text>
+          <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">
+            {buildSubtitle(item)}
+          </Text>
         </View>
       </Pressable>
       <Pressable
@@ -75,7 +79,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  texts: { flex: 1 },
+  // flex: 1 + flexShrink: 1 lets the text column shrink so the icon and the check circle keep their size.
+  texts: { flex: 1, flexShrink: 1 },
   name: { fontSize: 16, fontWeight: "600", color: colors.ink },
   subtitle: { fontSize: 12, color: colors.muted },
   check: {

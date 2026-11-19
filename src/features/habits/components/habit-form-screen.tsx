@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";
 import { RoundIconButton } from "@/components/ui/round-icon-button";
 import { colors } from "@/theme/colors";
+import { HABIT_NAME_MAX_LENGTH } from "../constants";
 import type { Habit } from "../types";
 import { useHabitForm } from "../hooks/use-habit-form";
 import { useTimePicker } from "../hooks/use-time-picker";
@@ -78,6 +79,7 @@ export function HabitFormScreen({ habit }: HabitFormScreenProps) {
             onChangeText={form.setName}
             placeholder="Sabah yürüyüşü"
             placeholderTextColor={colors.ring}
+            maxLength={HABIT_NAME_MAX_LENGTH}
             returnKeyType="done"
             style={styles.input}
           />
