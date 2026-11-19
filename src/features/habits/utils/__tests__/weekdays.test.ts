@@ -1,5 +1,5 @@
 import type { Weekday } from "../../types";
-import { toggleWeekday } from "../weekdays";
+import { toggleWeekday, WEEKDAY_NAMES } from "../weekdays";
 
 describe("toggleWeekday", () => {
   it("adds a day that is not selected", () => {
@@ -25,5 +25,13 @@ describe("toggleWeekday", () => {
 
   it("never returns duplicates, even if the input has some", () => {
     expect(toggleWeekday([1, 1, 2], 3)).toEqual([1, 2, 3]);
+  });
+});
+
+describe("WEEKDAY_NAMES", () => {
+  it("has seven full names indexed by weekday, Sunday first", () => {
+    expect(WEEKDAY_NAMES).toHaveLength(7);
+    expect(WEEKDAY_NAMES[0]).toBe("Pazar");
+    expect(WEEKDAY_NAMES[1]).toBe("Pazartesi");
   });
 });

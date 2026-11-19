@@ -14,6 +14,7 @@ export const lightColors = {
   deepMuted: "#9DB8A3",
   treeA: "#2F6B45",
   treeB: "#1F5233",
+  danger: "#9B3422", // error text only
 } as const;
 
 export type Palette = { [K in keyof typeof lightColors]: string };

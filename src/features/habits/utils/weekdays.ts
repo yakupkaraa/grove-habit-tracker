@@ -11,6 +11,17 @@ export function toggleWeekday(days: readonly Weekday[], day: Weekday): Weekday[]
 }
 
 // Indexed by Weekday (0 = Sunday)
+export const WEEKDAY_NAMES: readonly string[] = [
+  "Pazar",
+  "Pazartesi",
+  "Salı",
+  "Çarşamba",
+  "Perşembe",
+  "Cuma",
+  "Cumartesi",
+];
+
+// Indexed by Weekday (0 = Sunday)
 export const SHORT_WEEKDAY_NAMES: readonly string[] = [
   "Paz",
   "Pzt",
