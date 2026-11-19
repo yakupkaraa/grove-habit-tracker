@@ -9,7 +9,6 @@ export type Habit = {
   id: string;
   name: string;
   icon: HabitIcon;
-  color: string;
   repeatDays: Weekday[];
   reminderTime?: string; // "HH:mm"
   createdAt: string; // local YYYY-MM-DD

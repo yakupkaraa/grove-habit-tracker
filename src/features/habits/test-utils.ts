@@ -8,7 +8,6 @@ export function makeHabit(id: string, overrides: Partial<Habit> = {}): Habit {
     id,
     name: id,
     icon: "water",
-    color: "#2F6B45",
     repeatDays: ALL_DAYS,
     createdAt: "2026-01-01",
     ...overrides,

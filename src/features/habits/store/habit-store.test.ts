@@ -20,7 +20,6 @@ const nextTick = () => new Promise((resolve) => setTimeout(resolve, 0));
 const input = {
   name: "Su iç",
   icon: "water" as const,
-  color: "#2F6B45",
   repeatDays: [1, 2, 3] as (0 | 1 | 2 | 3 | 4 | 5 | 6)[],
 };
 
@@ -28,7 +27,6 @@ const storedHabit = {
   id: "h1",
   name: "Su iç",
   icon: "water",
-  color: "#2F6B45",
   repeatDays: [1, 2],
   createdAt: "2026-11-01",
 };
@@ -152,12 +150,11 @@ describe("updateHabit", () => {
     const store = setup();
     store.getState().addHabit(input);
 
-    store.getState().updateHabit("id-1", { name: "Koş", color: "#000000" });
+    store.getState().updateHabit("id-1", { name: "Koş", icon: "walk" });
 
     expect(store.getState().habits[0]).toMatchObject({
       name: "Koş",
-      color: "#000000",
-      icon: input.icon,
+      icon: "walk",
       repeatDays: input.repeatDays,
     });
   });

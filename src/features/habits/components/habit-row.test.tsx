@@ -8,7 +8,6 @@ function makeItem(overrides: Partial<TodayItem["habit"]> = {}, rest: Partial<Tod
       id: "water",
       name: "Su iç",
       icon: "water-outline",
-      color: "#2F6B45",
       repeatDays: [0, 1, 2, 3, 4, 5, 6],
       reminderTime: "08:00",
       createdAt: "2026-01-01",

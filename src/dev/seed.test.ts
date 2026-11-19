@@ -32,7 +32,6 @@ describe("seedWhenHydrated", () => {
     useHabitStore.getState().addHabit({
       name: "Benim alışkanlığım",
       icon: "water-outline",
-      color: "#2F6B45",
       repeatDays: [1],
     });
 

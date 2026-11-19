@@ -64,7 +64,6 @@ function isHabit(value: unknown): value is Habit {
     typeof value.id === "string" &&
     typeof value.name === "string" &&
     typeof value.icon === "string" &&
-    typeof value.color === "string" &&
     typeof value.createdAt === "string" &&
     Array.isArray(value.repeatDays) &&
     value.repeatDays.every(isWeekday) &&

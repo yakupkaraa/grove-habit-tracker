@@ -6,7 +6,6 @@ import {
   useHabitStore,
   type Weekday,
 } from "@/features/habits";
-import { colors } from "@/theme/colors";
 
 const SEED_HISTORY_DAYS = 30;
 const EVERY_DAY: Weekday[] = [0, 1, 2, 3, 4, 5, 6];
@@ -15,7 +14,7 @@ const WEEKEND: Weekday[] = [6, 0];
 const MON_WED_FRI: Weekday[] = [1, 3, 5];
 
 type SeedHabit = {
-  habit: Omit<Habit, "createdAt" | "color">;
+  habit: Omit<Habit, "createdAt">;
   streakDays: number; // consecutive days before today that are marked done
   doneToday: boolean;
 };
@@ -90,11 +89,7 @@ const SAMPLE_HABITS: SeedHabit[] = [
 
 function buildSample(today: string): { habits: Habit[]; completions: Completion[] } {
   const createdAt = addDays(today, -SEED_HISTORY_DAYS);
-  const habits = SAMPLE_HABITS.map(({ habit }) => ({
-    ...habit,
-    color: colors.treeA,
-    createdAt,
-  }));
+  const habits = SAMPLE_HABITS.map(({ habit }) => ({ ...habit, createdAt }));
 
   const completions = SAMPLE_HABITS.flatMap(({ habit, streakDays, doneToday }) => {
     const days = Array.from({ length: streakDays }, (_, index) =>
