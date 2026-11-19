@@ -10,6 +10,7 @@ export const lightColors = {
   ring: "#5E7F6B",
   lime: "#D4E94A",
   deep: "#123221",
+  deep2: "#1C4430",
   deepMuted: "#9DB8A3",
   treeA: "#2F6B45",
   treeB: "#1F5233",
