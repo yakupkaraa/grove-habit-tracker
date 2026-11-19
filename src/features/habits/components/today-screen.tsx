@@ -33,6 +33,9 @@ const FILTERS: { value: TimeOfDayFilter; label: string }[] = [
 // There is no /settings route yet; wire it here once it exists.
 const openSettings = () => {};
 const openNewHabit = () => router.push("/habit/new");
+// Module-level, so its identity is stable and the memoized rows never re-render for it.
+const openHabit = (habitId: string) =>
+  router.push({ pathname: "/habit/[id]", params: { id: habitId } });
 
 type TodayScreenProps = {
   today: string;
@@ -57,7 +60,7 @@ export function TodayScreen({ today }: TodayScreenProps) {
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<TodayItem>) => (
-      <HabitRow item={item} onToggle={handleToggle} />
+      <HabitRow item={item} onToggle={handleToggle} onOpen={openHabit} />
     ),
     [handleToggle],
   );

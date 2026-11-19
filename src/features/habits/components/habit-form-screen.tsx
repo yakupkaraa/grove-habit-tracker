@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";
 import { RoundIconButton } from "@/components/ui/round-icon-button";
 import { colors } from "@/theme/colors";
+import type { Habit } from "../types";
 import { useHabitForm } from "../hooks/use-habit-form";
 import { useTimePicker } from "../hooks/use-time-picker";
 import { FieldLabel } from "./field-label";
@@ -33,10 +34,14 @@ function leaveScreen() {
   else router.replace("/");
 }
 
-export function NewHabitScreen() {
+type HabitFormScreenProps = {
+  habit?: Habit; // edit mode when given, "new habit" otherwise
+};
+
+export function HabitFormScreen({ habit }: HabitFormScreenProps) {
   const insets = useSafeAreaInsets();
   const scrollRef = useRef<ScrollViewInstance>(null);
-  const form = useHabitForm({ onSaved: leaveScreen });
+  const form = useHabitForm({ onSaved: leaveScreen, habit });
   const { openPicker, iosPicker } = useTimePicker({
     time: form.reminderTime,
     onChange: form.setReminderTime,
@@ -64,7 +69,7 @@ export function NewHabitScreen() {
           <RoundIconButton icon="chevron-back" accessibilityLabel="Geri" onPress={leaveScreen} />
           <RoundIconButton icon="close" accessibilityLabel="Kapat" onPress={leaveScreen} />
         </View>
-        <Text style={styles.title}>Yeni alışkanlık</Text>
+        <Text style={styles.title}>{habit ? "Alışkanlığı düzenle" : "Yeni alışkanlık"}</Text>
         <View style={styles.field}>
           <FieldLabel error={form.errors.name}>Ad</FieldLabel>
           <TextInput

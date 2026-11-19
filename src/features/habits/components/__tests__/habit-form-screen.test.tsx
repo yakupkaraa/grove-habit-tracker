@@ -4,8 +4,10 @@ import { router } from "expo-router";
 import { Platform } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useHabitStore } from "../../store/habit-store";
+import { makeHabit } from "../../test-utils";
+import type { Habit } from "../../types";
 import { formatTime } from "../../utils/time";
-import { NewHabitScreen } from "../new-habit-screen";
+import { HabitFormScreen } from "../habit-form-screen";
 
 // expo-router is a navigation boundary; we only check where we navigate.
 jest.mock("expo-router", () => ({
@@ -29,10 +31,10 @@ const SAFE_AREA_METRICS = {
   insets: { top: 47, left: 0, right: 0, bottom: 34 },
 };
 
-async function renderScreen() {
+async function renderScreen(habit?: Habit) {
   return render(
     <SafeAreaProvider initialMetrics={SAFE_AREA_METRICS}>
-      <NewHabitScreen />
+      <HabitFormScreen habit={habit} />
     </SafeAreaProvider>,
   );
 }
@@ -47,7 +49,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe("NewHabitScreen", () => {
+describe("HabitFormScreen", () => {
   it("starts with the defaults (Mon-Fri selected, reminder on at 07:30)", async () => {
     await renderScreen();
 
@@ -232,5 +234,43 @@ describe("NewHabitScreen", () => {
 
     expect(screen.queryByLabelText("Saat seçici")).toBeNull();
     expect(screen.getByRole("button", { name: "Hatırlatma saati 21:15" })).toBeTruthy();
+  });
+});
+
+describe("HabitFormScreen in edit mode", () => {
+  const habit = makeHabit("h1", {
+    name: "Su iç",
+    icon: "water-outline",
+    repeatDays: [1, 3],
+    reminderTime: "21:15",
+  });
+
+  beforeEach(() => {
+    useHabitStore.setState({ habits: [habit], completions: [] });
+  });
+
+  it("shows the edit title and prefills the form from the habit", async () => {
+    await renderScreen(habit);
+
+    expect(screen.getByText("Alışkanlığı düzenle")).toBeTruthy();
+    expect(screen.getByPlaceholderText("Sabah yürüyüşü")).toHaveDisplayValue("Su iç");
+    expect(screen.getByRole("button", { name: "Su", selected: true })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Pazartesi", selected: true })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Salı", selected: false })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Hatırlatma saati 21:15" })).toBeTruthy();
+  });
+
+  it("saves the edited habit and goes back", async () => {
+    await renderScreen(habit);
+    const user = userEvent.setup();
+    const input = screen.getByPlaceholderText("Sabah yürüyüşü");
+    await user.clear(input);
+    await user.type(input, "Çay iç");
+
+    await user.press(screen.getByRole("button", { name: "Kaydet" }));
+
+    expect(useHabitStore.getState().habits).toHaveLength(1);
+    expect(useHabitStore.getState().habits[0]).toMatchObject({ id: "h1", name: "Çay iç" });
+    expect(router.back).toHaveBeenCalledTimes(1);
   });
 });

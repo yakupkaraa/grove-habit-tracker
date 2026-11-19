@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import type { Completion, Habit, Weekday } from "../types";
 import { toDateKey } from "../utils/dates";
+import { validateHabitInput } from "../utils/habit-input";
 
 export const HABIT_STORAGE_KEY = "grove-habits";
 const STORAGE_VERSION = 1;
@@ -43,6 +44,11 @@ const DEFAULT_DEPS: StoreDeps = {
 
 function trimName(patch: HabitPatch): Pick<HabitPatch, "name"> {
   return patch.name === undefined ? {} : { name: patch.name.trim() };
+}
+
+// The form validates first; the store enforces the same rule so no caller can store a bad habit.
+function isValidInput(input: Pick<Habit, "name" | "repeatDays">): boolean {
+  return Object.keys(validateHabitInput(input)).length === 0;
 }
 
 function isSameCompletion(a: Completion, b: Completion): boolean {
@@ -103,17 +109,21 @@ export function createHabitStore(deps: Partial<StoreDeps> = {}) {
         hydrated: false,
 
         addHabit: (input) =>
-          set((state) => ({
-            habits: [
-              ...state.habits,
-              {
-                ...input,
-                name: input.name.trim(),
-                id: generateId(),
-                createdAt: toDateKey(now()),
-              },
-            ],
-          })),
+          set((state) => {
+            if (!isValidInput(input)) return state;
+
+            return {
+              habits: [
+                ...state.habits,
+                {
+                  ...input,
+                  name: input.name.trim(),
+                  id: generateId(),
+                  createdAt: toDateKey(now()),
+                },
+              ],
+            };
+          }),
 
         removeHabit: (id) =>
           set((state) => ({
@@ -122,13 +132,26 @@ export function createHabitStore(deps: Partial<StoreDeps> = {}) {
           })),
 
         updateHabit: (id, patch) =>
-          set((state) => ({
-            habits: state.habits.map((h) =>
-              h.id === id
-                ? { ...h, ...patch, ...trimName(patch), id: h.id, createdAt: h.createdAt }
-                : h,
-            ),
-          })),
+          set((state) => {
+            const current = state.habits.find((h) => h.id === id);
+            if (!current) return state;
+
+            const merged = {
+              ...current,
+              ...patch,
+              ...trimName(patch),
+              id: current.id,
+              createdAt: current.createdAt,
+            };
+            // `reminderTime: undefined` in a patch means "turn the reminder off": drop the key.
+            const { reminderTime: removed, ...withoutReminder } = merged;
+            const clearsReminder = "reminderTime" in patch && removed === undefined;
+            const updated: Habit = clearsReminder ? withoutReminder : merged;
+            // Validate the merged habit, so a rejected patch changes nothing (atomic).
+            if (!isValidInput(updated)) return state;
+
+            return { habits: state.habits.map((h) => (h.id === id ? updated : h)) };
+          }),
 
         toggleCompletion: (habitId, date) =>
           set((state) => {

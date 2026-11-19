@@ -86,6 +86,22 @@ describe("addHabit", () => {
 
     expect(store.getState().habits[0]).toMatchObject(full);
   });
+
+  it("ignores a habit with an empty name", () => {
+    const store = setup();
+
+    store.getState().addHabit({ ...input, name: "   " });
+
+    expect(store.getState().habits).toEqual([]);
+  });
+
+  it("ignores a habit with no repeat day", () => {
+    const store = setup();
+
+    store.getState().addHabit({ ...input, repeatDays: [] });
+
+    expect(store.getState().habits).toEqual([]);
+  });
 });
 
 describe("removeHabit", () => {
@@ -202,6 +218,35 @@ describe("updateHabit", () => {
 
     expect(store.getState().habits[1]).toEqual(second);
   });
+
+  it("ignores a patch that would leave the name empty", () => {
+    const store = setup();
+    store.getState().addHabit(input);
+    const before = store.getState().habits;
+
+    store.getState().updateHabit("id-1", { name: "  ", icon: "book" });
+
+    expect(store.getState().habits).toEqual(before);
+  });
+
+  it("ignores a patch that would leave no repeat day", () => {
+    const store = setup();
+    store.getState().addHabit(input);
+    const before = store.getState().habits;
+
+    store.getState().updateHabit("id-1", { repeatDays: [], icon: "book" });
+
+    expect(store.getState().habits).toEqual(before);
+  });
+
+  it("removes reminderTime when the patch clears it", () => {
+    const store = setup();
+    store.getState().addHabit({ ...input, reminderTime: "08:00" });
+
+    store.getState().updateHabit("id-1", { reminderTime: undefined });
+
+    expect(store.getState().habits[0]).not.toHaveProperty("reminderTime");
+  });
 });
 
 describe("toggleCompletion", () => {
@@ -297,6 +342,22 @@ describe("persist", () => {
 
     expect(second.getState().habits).toEqual(first.getState().habits);
     expect(second.getState().completions).toEqual(first.getState().completions);
+  });
+
+  it("persists edits and deletions across a rehydrate", async () => {
+    const first = setup();
+    first.getState().addHabit(input);
+    first.getState().addHabit({ ...input, name: "Koş" });
+    first.getState().toggleCompletion("id-2", "2026-11-18");
+    first.getState().updateHabit("id-1", { name: "Su ve çay" });
+    first.getState().removeHabit("id-2");
+    await nextTick();
+
+    const second = setup();
+    await second.persist.rehydrate();
+
+    expect(second.getState().habits.map((h) => h.name)).toEqual(["Su ve çay"]);
+    expect(second.getState().completions).toEqual([]);
   });
 
   it("falls back to empty state when the stored value is not valid JSON", async () => {

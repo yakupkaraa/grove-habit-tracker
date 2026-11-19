@@ -21,52 +21,73 @@ function makeItem(overrides: Partial<TodayItem["habit"]> = {}, rest: Partial<Tod
 
 describe("HabitRow", () => {
   it("shows the habit name", async () => {
-    await render(<HabitRow item={makeItem()} onToggle={() => {}} />);
+    await render(<HabitRow item={makeItem()} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByText("Su iç")).toBeTruthy();
   });
 
   it("shows the repeat label, reminder and streak", async () => {
-    await render(<HabitRow item={makeItem()} onToggle={() => {}} />);
+    await render(<HabitRow item={makeItem()} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByText("Her gün · 08:00 · 12 gün")).toBeTruthy();
   });
 
   it("omits the reminder when the habit has none", async () => {
     const item = makeItem({ reminderTime: undefined });
-    await render(<HabitRow item={item} onToggle={() => {}} />);
+    await render(<HabitRow item={item} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByText("Her gün · 12 gün")).toBeTruthy();
   });
 
   it("hides the streak part when the streak is zero", async () => {
     const item = makeItem({}, { streak: 0 });
-    await render(<HabitRow item={item} onToggle={() => {}} />);
+    await render(<HabitRow item={item} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByText("Her gün · 08:00")).toBeTruthy();
   });
 
   it("labels the check button as completable when the habit is not done", async () => {
-    await render(<HabitRow item={makeItem()} onToggle={() => {}} />);
+    await render(<HabitRow item={makeItem()} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByRole("button", { name: "Su iç tamamla" })).toBeTruthy();
   });
 
   it("labels the check button as undoable when the habit is done", async () => {
     const item = makeItem({}, { done: true });
-    await render(<HabitRow item={item} onToggle={() => {}} />);
+    await render(<HabitRow item={item} onToggle={() => {}} onOpen={() => {}} />);
 
     expect(screen.getByRole("button", { name: "Su iç tamamlandı, geri al" })).toBeTruthy();
   });
 
   it("calls onToggle with the habit id when the check button is pressed", async () => {
     const onToggle = jest.fn();
-    await render(<HabitRow item={makeItem()} onToggle={onToggle} />);
+    await render(<HabitRow item={makeItem()} onToggle={onToggle} onOpen={() => {}} />);
 
     const user = userEvent.setup();
     await user.press(screen.getByRole("button", { name: "Su iç tamamla" }));
 
     expect(onToggle).toHaveBeenCalledTimes(1);
     expect(onToggle).toHaveBeenCalledWith("water");
+  });
+
+  it("calls onOpen with the habit id when the row is pressed", async () => {
+    const onOpen = jest.fn();
+    await render(<HabitRow item={makeItem()} onToggle={() => {}} onOpen={onOpen} />);
+
+    const user = userEvent.setup();
+    await user.press(screen.getByRole("button", { name: "Su iç, ayrıntıları aç" }));
+
+    expect(onOpen).toHaveBeenCalledTimes(1);
+    expect(onOpen).toHaveBeenCalledWith("water");
+  });
+
+  it("does not toggle when the row is pressed", async () => {
+    const onToggle = jest.fn();
+    await render(<HabitRow item={makeItem()} onToggle={onToggle} onOpen={() => {}} />);
+
+    const user = userEvent.setup();
+    await user.press(screen.getByRole("button", { name: "Su iç, ayrıntıları aç" }));
+
+    expect(onToggle).not.toHaveBeenCalled();
   });
 });

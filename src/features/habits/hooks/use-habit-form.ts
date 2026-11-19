@@ -5,20 +5,31 @@ import {
   DEFAULT_REPEAT_DAYS,
 } from "../constants";
 import { useHabitStore } from "../store/habit-store";
-import type { HabitIcon, Weekday } from "../types";
+import type { Habit, HabitIcon, Weekday } from "../types";
 import { validateHabitInput } from "../utils/habit-input";
 import { toggleWeekday } from "../utils/weekdays";
 
-type UseHabitFormOptions = { onSaved: () => void };
+type UseHabitFormOptions = {
+  onSaved: () => void;
+  habit?: Habit; // edit mode: start from this habit and update it on submit
+};
 
-export function useHabitForm({ onSaved }: UseHabitFormOptions) {
+export function useHabitForm({ onSaved, habit }: UseHabitFormOptions) {
   const addHabit = useHabitStore((state) => state.addHabit);
-  const [name, setName] = useState("");
-  const [icon, setIcon] = useState<HabitIcon>(DEFAULT_ICON);
-  const [repeatDays, setRepeatDays] = useState<Weekday[]>([...DEFAULT_REPEAT_DAYS]);
+  const updateHabit = useHabitStore((state) => state.updateHabit);
+  const [name, setName] = useState(habit?.name ?? "");
+  const [icon, setIcon] = useState<HabitIcon>(habit?.icon ?? DEFAULT_ICON);
+  const [repeatDays, setRepeatDays] = useState<Weekday[]>(
+    habit ? [...habit.repeatDays] : [...DEFAULT_REPEAT_DAYS],
+  );
 
-  const [reminderEnabled, setReminderEnabled] = useState(true);
-  const [reminderTime, setReminderTime] = useState(DEFAULT_REMINDER_TIME);
+  // New habits start with the reminder on; an existing one keeps whatever it had.
+  const [reminderEnabled, setReminderEnabled] = useState(
+    habit ? habit.reminderTime !== undefined : true,
+  );
+  const [reminderTime, setReminderTime] = useState(
+    habit?.reminderTime ?? DEFAULT_REMINDER_TIME,
+  );
   const [submitted, setSubmitted] = useState(false);
   // A ref, not state: a fast double tap runs submit twice before React re-renders.
   const saved = useRef(false);
@@ -35,12 +46,22 @@ export function useHabitForm({ onSaved }: UseHabitFormOptions) {
     if (Object.keys(validation).length > 0) return;
 
     saved.current = true;
-    addHabit({
-      name,
-      icon,
-      repeatDays,
-      ...(reminderEnabled && { reminderTime }),
-    });
+    if (habit) {
+      // `reminderTime: undefined` tells the store to drop the reminder.
+      updateHabit(habit.id, {
+        name,
+        icon,
+        repeatDays,
+        reminderTime: reminderEnabled ? reminderTime : undefined,
+      });
+    } else {
+      addHabit({
+        name,
+        icon,
+        repeatDays,
+        ...(reminderEnabled && { reminderTime }),
+      });
+    }
     onSaved();
   };
 

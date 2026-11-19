@@ -12,6 +12,8 @@ export default function RootLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="habit/new" options={{ presentation: "modal" }} />
+      <Stack.Screen name="habit/[id]" />
+      <Stack.Screen name="habit/edit/[id]" options={{ presentation: "modal" }} />
     </Stack>
   );
 }

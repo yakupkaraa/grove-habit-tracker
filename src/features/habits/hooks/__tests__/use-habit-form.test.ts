@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { useHabitStore } from "../../store/habit-store";
+import { makeHabit } from "../../test-utils";
 import { useHabitForm } from "../use-habit-form";
 
 beforeEach(() => {
@@ -194,5 +195,93 @@ describe("useHabitForm", () => {
 
     expect(useHabitStore.getState().habits).toHaveLength(1);
     expect(onSaved).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("useHabitForm in edit mode", () => {
+  const habit = makeHabit("h1", {
+    name: "Su iç",
+    icon: "water-outline",
+    repeatDays: [1, 3],
+    reminderTime: "21:15",
+    createdAt: "2026-01-01",
+  });
+
+  beforeEach(() => {
+    useHabitStore.setState({ habits: [habit], completions: [] });
+  });
+
+  it("starts with the habit's values in edit mode", async () => {
+    const { result } = await renderHook(() => useHabitForm({ onSaved: () => {}, habit }));
+
+    expect(result.current).toMatchObject({
+      name: "Su iç",
+      icon: "water-outline",
+      repeatDays: [1, 3],
+      reminderEnabled: true,
+      reminderTime: "21:15",
+    });
+  });
+
+  it("starts with the reminder off when the habit has none, and turning it on offers the default time", async () => {
+    const { reminderTime: _removed, ...withoutReminder } = habit;
+    const { result } = await renderHook(() =>
+      useHabitForm({ onSaved: () => {}, habit: withoutReminder }),
+    );
+    expect(result.current.reminderEnabled).toBe(false);
+
+    await act(async () => result.current.setReminderEnabled(true));
+
+    expect(result.current.reminderTime).toBe("07:30");
+  });
+
+  it("saves the changes through updateHabit and keeps id and createdAt", async () => {
+    const onSaved = jest.fn();
+    const { result } = await renderHook(() => useHabitForm({ onSaved, habit }));
+    await act(async () => result.current.setName("  Çay iç "));
+    await act(async () => result.current.setIcon("leaf-outline"));
+    await act(async () => result.current.toggleDay(5));
+
+    await act(async () => result.current.submit());
+
+    expect(useHabitStore.getState().habits[0]).toMatchObject({
+      id: "h1",
+      createdAt: "2026-01-01",
+      name: "Çay iç",
+      icon: "leaf-outline",
+      repeatDays: [1, 3, 5],
+      reminderTime: "21:15",
+    });
+    expect(onSaved).toHaveBeenCalledTimes(1);
+  });
+
+  it("removes the reminder when it is turned off in edit mode", async () => {
+    const { result } = await renderHook(() => useHabitForm({ onSaved: () => {}, habit }));
+    await act(async () => result.current.setReminderEnabled(false));
+
+    await act(async () => result.current.submit());
+
+    expect(useHabitStore.getState().habits[0]).not.toHaveProperty("reminderTime");
+  });
+
+  it("does not create a new habit in edit mode", async () => {
+    const { result } = await renderHook(() => useHabitForm({ onSaved: () => {}, habit }));
+    await act(async () => result.current.setName("Çay iç"));
+
+    await act(async () => result.current.submit());
+
+    expect(useHabitStore.getState().habits).toHaveLength(1);
+  });
+
+  it("does not update and shows the errors when the form is invalid in edit mode", async () => {
+    const onSaved = jest.fn();
+    const { result } = await renderHook(() => useHabitForm({ onSaved, habit }));
+    await act(async () => result.current.setName("  "));
+
+    await act(async () => result.current.submit());
+
+    expect(result.current.errors.name).toBeDefined();
+    expect(useHabitStore.getState().habits[0].name).toBe("Su iç");
+    expect(onSaved).not.toHaveBeenCalled();
   });
 });

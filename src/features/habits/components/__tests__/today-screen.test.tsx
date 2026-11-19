@@ -288,4 +288,17 @@ describe("TodayScreen", () => {
 
     expect(screen.getByText("Su iç")).toBeTruthy();
   });
+
+  it("opens the habit detail when a row is pressed", async () => {
+    seedStore([makeHabit("water", { name: "Su iç" })]);
+    await renderScreen();
+
+    const user = userEvent.setup();
+    await user.press(screen.getByRole("button", { name: "Su iç, ayrıntıları aç" }));
+
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: "/habit/[id]",
+      params: { id: "water" },
+    });
+  });
 });

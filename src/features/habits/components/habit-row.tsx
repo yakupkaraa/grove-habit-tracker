@@ -8,6 +8,7 @@ import type { TodayItem } from "../utils/today";
 type HabitRowProps = {
   item: TodayItem;
   onToggle: (habitId: string) => void;
+  onOpen: (habitId: string) => void;
 };
 
 const SUBTITLE_SEPARATOR = " · ";
@@ -20,18 +21,26 @@ function buildSubtitle({ habit, streak }: TodayItem): string {
     .join(SUBTITLE_SEPARATOR);
 }
 
-export const HabitRow = memo(function HabitRow({ item, onToggle }: HabitRowProps) {
+export const HabitRow = memo(function HabitRow({ item, onToggle, onOpen }: HabitRowProps) {
   const { habit } = item;
 
   return (
     <View style={styles.row}>
-      <View style={styles.icon}>
-        <Ionicons name={habit.icon} size={20} color={colors.ink} />
-      </View>
-      <View style={styles.texts}>
-        <Text style={styles.name}>{habit.name}</Text>
-        <Text style={styles.subtitle}>{buildSubtitle(item)}</Text>
-      </View>
+      {/* Two sibling pressables (not nested): the body opens the detail, the circle toggles. */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${habit.name}, ayrıntıları aç`}
+        onPress={() => onOpen(habit.id)}
+        style={styles.body}
+      >
+        <View style={styles.icon}>
+          <Ionicons name={habit.icon} size={20} color={colors.ink} />
+        </View>
+        <View style={styles.texts}>
+          <Text style={styles.name}>{habit.name}</Text>
+          <Text style={styles.subtitle}>{buildSubtitle(item)}</Text>
+        </View>
+      </Pressable>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={
@@ -57,6 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     backgroundColor: colors.card,
   },
+  body: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
   icon: {
     width: 40,
     height: 40,
