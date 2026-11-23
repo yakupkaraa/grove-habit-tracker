@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -22,6 +24,9 @@ export function RoundIconButton({
   size = DEFAULT_SIZE,
   selected,
 }: RoundIconButtonProps) {
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -43,11 +48,12 @@ export function RoundIconButton({
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: colors.card,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonSelected: { backgroundColor: colors.deep },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    button: {
+      backgroundColor: colors.card,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    buttonSelected: { backgroundColor: colors.deep },
+  });

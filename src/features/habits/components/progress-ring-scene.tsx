@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
-import { colors } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
 import { PineScene } from "./pine-scene";
 
 const STROKE_WIDTH = 8;
@@ -18,6 +18,7 @@ export function ProgressRingScene({
   size,
   label = "Günlük ilerleme",
 }: ProgressRingSceneProps) {
+  const colors = useColors();
   const progress = Math.min(1, Math.max(0, rawProgress));
   const radius = (size - STROKE_WIDTH) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -47,7 +48,7 @@ export function ProgressRingScene({
           cy={center}
           r={radius}
           fill="none"
-          stroke={colors.deep}
+          stroke={colors.fill}
           strokeWidth={STROKE_WIDTH}
           strokeLinecap="round"
           strokeDasharray={`${circumference * progress} ${circumference}`}

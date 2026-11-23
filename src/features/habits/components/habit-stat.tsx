@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 
 type HabitStatProps = {
   label: string;
@@ -8,6 +9,8 @@ type HabitStatProps = {
 
 // One accessible element ("Mevcut seri: 2 gün"), so a screen reader never reads a value without its label.
 export function HabitStat({ label, value }: HabitStatProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View accessible accessibilityLabel={`${label}: ${value}`} style={styles.card}>
       <Text style={styles.value}>{value}</Text>
@@ -16,15 +19,16 @@ export function HabitStat({ label, value }: HabitStatProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    gap: 4,
-    paddingVertical: 16,
-    paddingHorizontal: 14,
-    borderRadius: 28,
-    backgroundColor: colors.card,
-  },
-  value: { fontSize: 22, fontWeight: "700", color: colors.ink },
-  label: { fontSize: 12, color: colors.muted },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      flex: 1,
+      gap: 4,
+      paddingVertical: 16,
+      paddingHorizontal: 14,
+      borderRadius: 28,
+      backgroundColor: colors.card,
+    },
+    value: { fontSize: 22, fontWeight: "700", color: colors.ink },
+    label: { fontSize: 12, color: colors.muted },
+  });

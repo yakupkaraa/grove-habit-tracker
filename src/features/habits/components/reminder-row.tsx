@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import type { Weekday } from "../types";
 import { formatRepeatDays } from "../utils/repeat-label";
 
@@ -19,6 +21,8 @@ export function ReminderRow({
   onToggle,
   onPressTime,
 }: ReminderRowProps) {
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
   const repeatLabel = formatRepeatDays(repeatDays);
 
   return (
@@ -56,39 +60,40 @@ export function ReminderRow({
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    height: 76,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    paddingHorizontal: 22,
-    borderRadius: 36,
-    backgroundColor: colors.deep,
-  },
-  bell: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.deep2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  texts: { flex: 1 },
-  title: { fontSize: 16, fontWeight: "600", color: colors.card },
-  subtitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  subtitle: { fontSize: 13, color: colors.deepMuted },
-  time: { fontSize: 13, fontWeight: "700", color: colors.lime },
-  track: {
-    width: 54,
-    height: 32,
-    borderRadius: 16,
-    padding: 4,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    backgroundColor: colors.track,
-  },
-  trackOn: { alignItems: "flex-end", backgroundColor: colors.lime },
-  knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.ring },
-  knobOn: { backgroundColor: colors.deep },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      height: 76,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 14,
+      paddingHorizontal: 22,
+      borderRadius: 36,
+      backgroundColor: colors.deep,
+    },
+    bell: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: colors.deep2,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    texts: { flex: 1 },
+    title: { fontSize: 16, fontWeight: "600", color: colors.onDeep },
+    subtitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+    subtitle: { fontSize: 13, color: colors.deepMuted },
+    time: { fontSize: 13, fontWeight: "700", color: colors.lime },
+    track: {
+      width: 54,
+      height: 32,
+      borderRadius: 16,
+      padding: 4,
+      justifyContent: "center",
+      alignItems: "flex-start",
+      backgroundColor: colors.track,
+    },
+    trackOn: { alignItems: "flex-end", backgroundColor: colors.lime },
+    knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.ring },
+    knobOn: { backgroundColor: colors.deep },
+  });

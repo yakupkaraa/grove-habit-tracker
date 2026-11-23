@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { ProgressRingScene } from "./progress-ring-scene";
 
 const RING_SIZE = 140;
@@ -12,6 +14,8 @@ type SummaryCardProps = {
 };
 
 export function SummaryCard({ done, total, streak }: SummaryCardProps) {
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
   const allDone = total > 0 && done === total;
 
   return (
@@ -22,7 +26,7 @@ export function SummaryCard({ done, total, streak }: SummaryCardProps) {
         <Text style={styles.label}>{allDone ? "Hepsi tamamlandı" : "tamamlandı"}</Text>
         {allDone ? (
           <View style={[styles.pill, styles.pillDone]}>
-            <Ionicons name="flame" size={14} color={colors.ink} />
+            <Ionicons name="flame" size={14} color={colors.onLime} />
             <Text style={[styles.pillText, styles.pillTextDone]}>
               {`${streak} günlük seri`}
             </Text>
@@ -37,32 +41,33 @@ export function SummaryCard({ done, total, streak }: SummaryCardProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    height: 160,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-    padding: 10,
-    paddingRight: 24,
-    borderRadius: 40,
-    backgroundColor: colors.card,
-  },
-  texts: { flex: 1 },
-  count: { fontSize: 44, lineHeight: 46, fontWeight: "600", color: colors.ink },
-  label: { fontSize: 15, color: colors.muted, marginTop: 2 },
-  pill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    alignSelf: "flex-start",
-    marginTop: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: colors.deep,
-  },
-  pillDone: { backgroundColor: colors.lime },
-  pillText: { fontSize: 13, fontWeight: "600", color: colors.lime },
-  pillTextDone: { color: colors.ink },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    card: {
+      height: 160,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 20,
+      padding: 10,
+      paddingRight: 24,
+      borderRadius: 40,
+      backgroundColor: colors.card,
+    },
+    texts: { flex: 1 },
+    count: { fontSize: 44, lineHeight: 46, fontWeight: "600", color: colors.ink },
+    label: { fontSize: 15, color: colors.muted, marginTop: 2 },
+    pill: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+      alignSelf: "flex-start",
+      marginTop: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 6,
+      borderRadius: 16,
+      backgroundColor: colors.deep,
+    },
+    pillDone: { backgroundColor: colors.lime },
+    pillText: { fontSize: 13, fontWeight: "600", color: colors.lime },
+    pillTextDone: { color: colors.onLime },
+  });

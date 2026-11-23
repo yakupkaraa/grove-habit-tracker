@@ -3,7 +3,8 @@ import { useCallback, useMemo, useState } from "react";
 import { FlatList, type ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FilterChip } from "@/components/ui/filter-chip";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { useHydrated } from "../hooks/use-hydrated";
 import { useTodayHabits } from "../hooks/use-today-habits";
 import { useHabitStore } from "../store/habit-store";
@@ -42,6 +43,7 @@ type TodayScreenProps = {
 
 export function TodayScreen({ today }: TodayScreenProps) {
   const insets = useSafeAreaInsets();
+  const styles = useThemedStyles(createStyles);
   const hydrated = useHydrated();
   const items = useTodayHabits(today);
   const [filter, setFilter] = useState<TimeOfDayFilter>("all");
@@ -114,21 +116,22 @@ export function TodayScreen({ today }: TodayScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  header: { gap: 10, marginBottom: 4 },
-  chips: { flexDirection: "row", gap: 8 },
-  noMatch: {
-    fontSize: 14,
-    color: colors.muted,
-    textAlign: "center",
-    paddingVertical: 24,
-  },
-  title: {
-    fontSize: 42,
-    lineHeight: 44,
-    fontWeight: "500",
-    letterSpacing: -0.8,
-    color: colors.ink,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.bg },
+    header: { gap: 10, marginBottom: 4 },
+    chips: { flexDirection: "row", gap: 8 },
+    noMatch: {
+      fontSize: 14,
+      color: colors.muted,
+      textAlign: "center",
+      paddingVertical: 24,
+    },
+    title: {
+      fontSize: 42,
+      lineHeight: 44,
+      fontWeight: "500",
+      letterSpacing: -0.8,
+      color: colors.ink,
+    },
+  });

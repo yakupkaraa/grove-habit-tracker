@@ -11,6 +11,7 @@ export type Palette = {
   deep: string; // dark surface that carries lime text (tab bar, selected chip, button)
   deep2: string;
   deepMuted: string;
+  onDeep: string; // primary text on `deep` (the light palette uses the card color there)
   fill: string; // progress ring and bar fill (a stroke, not a surface)
   treeA: string;
   treeB: string;
@@ -30,6 +31,7 @@ export const lightColors: Palette = {
   deep: "#123221",
   deep2: "#1C4430",
   deepMuted: "#9DB8A3",
+  onDeep: "#F3F5EA",
   fill: "#123221",
   treeA: "#2F6B45",
   treeB: "#1F5233",
@@ -51,6 +53,7 @@ export const darkColors: Palette = {
   deep: "#2E6044",
   deep2: "#3A7050",
   deepMuted: "#C4D9C9",
+  onDeep: "#E8F0E5",
   fill: "#D4E94A",
   treeA: "#47965F",
   treeB: "#5DB07C",
@@ -58,6 +61,3 @@ export const darkColors: Palette = {
 };
 
 export const palettes = { light: lightColors, dark: darkColors };
-
-// Kept until every component reads the active palette (useColors); then it is deleted.
-export const colors = lightColors;

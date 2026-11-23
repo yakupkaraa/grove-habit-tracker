@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RoundIconButton } from "@/components/ui/round-icon-button";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { useHabitStore } from "../store/habit-store";
 import { formatPercent } from "../utils/format-percent";
 import { getHabitDetail } from "../utils/habit-detail";
@@ -23,7 +25,9 @@ type HabitDetailScreenProps = {
 
 export function HabitDetailScreen({ id, today }: HabitDetailScreenProps) {
   const insets = useSafeAreaInsets();
-  const habit = useHabitStore((state) => state.habits.find((h) => h.id === id));
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
+  const habit =useHabitStore((state) => state.habits.find((h) => h.id === id));
   const completions = useHabitStore((state) => state.completions);
   const removeHabit = useHabitStore((state) => state.removeHabit);
   const detail = useMemo(
@@ -106,31 +110,32 @@ export function HabitDetailScreen({ id, today }: HabitDetailScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  header: { flexDirection: "row", justifyContent: "space-between" },
-  actions: { flexDirection: "row", gap: 8 },
-  title: { gap: 12 },
-  iconCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: colors.iconBg,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  name: {
-    fontSize: 36,
-    lineHeight: 40,
-    fontWeight: "500",
-    letterSpacing: -0.6,
-    color: colors.ink,
-  },
-  stats: { flexDirection: "row", gap: 10 },
-  info: {
-    gap: 14,
-    padding: 20,
-    borderRadius: 28,
-    backgroundColor: colors.card,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.bg },
+    header: { flexDirection: "row", justifyContent: "space-between" },
+    actions: { flexDirection: "row", gap: 8 },
+    title: { gap: 12 },
+    iconCircle: {
+      width: 64,
+      height: 64,
+      borderRadius: 32,
+      backgroundColor: colors.iconBg,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    name: {
+      fontSize: 36,
+      lineHeight: 40,
+      fontWeight: "500",
+      letterSpacing: -0.6,
+      color: colors.ink,
+    },
+    stats: { flexDirection: "row", gap: 10 },
+    info: {
+      gap: 14,
+      padding: 20,
+      borderRadius: 28,
+      backgroundColor: colors.card,
+    },
+  });

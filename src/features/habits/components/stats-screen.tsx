@@ -3,7 +3,8 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FilterChip } from "@/components/ui/filter-chip";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { useHydrated } from "../hooks/use-hydrated";
 import { useHabitStore } from "../store/habit-store";
 import { describeCompletionDays } from "../utils/describe-completion-days";
@@ -35,6 +36,7 @@ type StatsScreenProps = {
 
 export function StatsScreen({ today }: StatsScreenProps) {
   const insets = useSafeAreaInsets();
+  const styles = useThemedStyles(createStyles);
   const hydrated = useHydrated();
   const habits = useHabitStore((state) => state.habits);
   const completions = useHabitStore((state) => state.completions);
@@ -114,44 +116,45 @@ export function StatsScreen({ today }: StatsScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  title: {
-    fontSize: 42,
-    lineHeight: 44,
-    fontWeight: "500",
-    letterSpacing: -0.8,
-    color: colors.ink,
-  },
-  chips: { flexDirection: "row", gap: 8 },
-  streak: {
-    gap: 2,
-    paddingVertical: 14,
-    paddingHorizontal: 22,
-    borderRadius: 28,
-    backgroundColor: colors.deep,
-  },
-  streakLabel: { fontSize: 13, color: colors.deepMuted },
-  streakValue: { fontSize: 20, fontWeight: "600", color: colors.lime },
-  chart: { padding: 16, borderRadius: 32, backgroundColor: colors.card },
-  noDays: {
-    fontSize: 14,
-    color: colors.muted,
-    textAlign: "center",
-    paddingVertical: 24,
-  },
-  rows: { gap: 6 },
-  card: {
-    height: 160,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-    padding: 10,
-    paddingRight: 24,
-    borderRadius: 40,
-    backgroundColor: colors.card,
-  },
-  texts: { flex: 1 },
-  rate: { fontSize: 44, lineHeight: 46, fontWeight: "600", color: colors.ink },
-  label: { fontSize: 15, color: colors.muted, marginTop: 2 },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.bg },
+    title: {
+      fontSize: 42,
+      lineHeight: 44,
+      fontWeight: "500",
+      letterSpacing: -0.8,
+      color: colors.ink,
+    },
+    chips: { flexDirection: "row", gap: 8 },
+    streak: {
+      gap: 2,
+      paddingVertical: 14,
+      paddingHorizontal: 22,
+      borderRadius: 28,
+      backgroundColor: colors.deep,
+    },
+    streakLabel: { fontSize: 13, color: colors.deepMuted },
+    streakValue: { fontSize: 20, fontWeight: "600", color: colors.lime },
+    chart: { padding: 16, borderRadius: 32, backgroundColor: colors.card },
+    noDays: {
+      fontSize: 14,
+      color: colors.muted,
+      textAlign: "center",
+      paddingVertical: 24,
+    },
+    rows: { gap: 6 },
+    card: {
+      height: 160,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 20,
+      padding: 10,
+      paddingRight: 24,
+      borderRadius: 40,
+      backgroundColor: colors.card,
+    },
+    texts: { flex: 1 },
+    rate: { fontSize: 44, lineHeight: 46, fontWeight: "600", color: colors.ink },
+    label: { fontSize: 15, color: colors.muted, marginTop: 2 },
+  });

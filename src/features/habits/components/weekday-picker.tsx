@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import type { Weekday } from "../types";
 import { MONDAY_FIRST, SHORT_WEEKDAY_NAMES, WEEKDAY_NAMES } from "../utils/weekdays";
 
@@ -9,6 +10,8 @@ type WeekdayPickerProps = {
 };
 
 export function WeekdayPicker({ selectedDays, onToggle }: WeekdayPickerProps) {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View style={styles.row}>
       {MONDAY_FIRST.map((day) => {
@@ -33,17 +36,18 @@ export function WeekdayPicker({ selectedDays, onToggle }: WeekdayPickerProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: "row", justifyContent: "space-between" },
-  day: {
-    width: 42,
-    height: 56,
-    borderRadius: 21,
-    backgroundColor: colors.card,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  daySelected: { backgroundColor: colors.deep },
-  text: { fontSize: 12, fontWeight: "700", color: colors.ink },
-  textSelected: { color: colors.lime },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    row: { flexDirection: "row", justifyContent: "space-between" },
+    day: {
+      width: 42,
+      height: 56,
+      borderRadius: 21,
+      backgroundColor: colors.card,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    daySelected: { backgroundColor: colors.deep },
+    text: { fontSize: 12, fontWeight: "700", color: colors.ink },
+    textSelected: { color: colors.lime },
+  });

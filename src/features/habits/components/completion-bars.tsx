@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { getWeekday } from "../utils/dates";
 import { SHORT_WEEKDAY_NAMES } from "../utils/weekdays";
 
@@ -17,6 +18,7 @@ type CompletionBarsProps = {
 };
 
 export function CompletionBars({ days, label }: CompletionBarsProps) {
+  const styles = useThemedStyles(createStyles);
   // Thirty bars have no room for names: only a week gets weekday labels.
   const showWeekdays = days.length <= WEEK_LENGTH;
   const gap = showWeekdays ? WEEK_BAR_GAP : MONTH_BAR_GAP;
@@ -46,17 +48,18 @@ export function CompletionBars({ days, label }: CompletionBarsProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: "row" },
-  column: { flex: 1, alignItems: "center", gap: 6 },
-  track: {
-    width: "100%",
-    height: CHART_HEIGHT,
-    justifyContent: "flex-end",
-    borderRadius: 8,
-    backgroundColor: colors.track,
-    overflow: "hidden",
-  },
-  fill: { width: "100%", backgroundColor: colors.deep },
-  weekday: { fontSize: 11, fontWeight: "600", color: colors.muted },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    row: { flexDirection: "row" },
+    column: { flex: 1, alignItems: "center", gap: 6 },
+    track: {
+      width: "100%",
+      height: CHART_HEIGHT,
+      justifyContent: "flex-end",
+      borderRadius: 8,
+      backgroundColor: colors.track,
+      overflow: "hidden",
+    },
+    fill: { width: "100%", backgroundColor: colors.fill },
+    weekday: { fontSize: 11, fontWeight: "600", color: colors.muted },
+  });

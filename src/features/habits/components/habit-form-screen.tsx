@@ -12,7 +12,9 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/ui/button";
 import { RoundIconButton } from "@/components/ui/round-icon-button";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { HABIT_NAME_MAX_LENGTH } from "../constants";
 import type { Habit } from "../types";
 import { useHabitForm } from "../hooks/use-habit-form";
@@ -41,6 +43,8 @@ type HabitFormScreenProps = {
 
 export function HabitFormScreen({ habit }: HabitFormScreenProps) {
   const insets = useSafeAreaInsets();
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
   const scrollRef = useRef<ScrollViewInstance>(null);
   const form = useHabitForm({ onSaved: leaveScreen, habit });
   const { openPicker, iosPicker } = useTimePicker({
@@ -78,7 +82,7 @@ export function HabitFormScreen({ habit }: HabitFormScreenProps) {
             value={form.name}
             onChangeText={form.setName}
             placeholder="Sabah yürüyüşü"
-            placeholderTextColor={colors.ring}
+            placeholderTextColor={colors.muted}
             maxLength={HABIT_NAME_MAX_LENGTH}
             returnKeyType="done"
             style={styles.input}
@@ -113,25 +117,26 @@ export function HabitFormScreen({ habit }: HabitFormScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  footer: { paddingHorizontal: SCREEN_PADDING, paddingTop: FOOTER_GAP },
-  header: { flexDirection: "row", justifyContent: "space-between" },
-  title: {
-    fontSize: 42,
-    lineHeight: 46,
-    fontWeight: "500",
-    letterSpacing: -0.8,
-    color: colors.ink,
-  },
-  field: { gap: LABEL_GAP },
-  input: {
-    height: 60,
-    borderRadius: 30,
-    paddingHorizontal: 24,
-    backgroundColor: colors.card,
-    fontSize: 20,
-    fontWeight: "600",
-    color: colors.ink,
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.bg },
+    footer: { paddingHorizontal: SCREEN_PADDING, paddingTop: FOOTER_GAP },
+    header: { flexDirection: "row", justifyContent: "space-between" },
+    title: {
+      fontSize: 42,
+      lineHeight: 46,
+      fontWeight: "500",
+      letterSpacing: -0.8,
+      color: colors.ink,
+    },
+    field: { gap: LABEL_GAP },
+    input: {
+      height: 60,
+      borderRadius: 30,
+      paddingHorizontal: 24,
+      backgroundColor: colors.card,
+      fontSize: 20,
+      fontWeight: "600",
+      color: colors.ink,
+    },
+  });

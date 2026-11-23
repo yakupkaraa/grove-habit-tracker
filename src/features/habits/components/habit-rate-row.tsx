@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import type { Habit } from "../types";
 import { formatPercent } from "../utils/format-percent";
 
@@ -12,6 +14,8 @@ type HabitRateRowProps = {
 };
 
 export const HabitRateRow = memo(function HabitRateRow({ habit, rate, onOpen }: HabitRateRowProps) {
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
   const spokenRate = rate === null ? "oran yok" : formatPercent(rate);
 
   return (
@@ -32,26 +36,27 @@ export const HabitRateRow = memo(function HabitRateRow({ habit, rate, onOpen }: 
   );
 });
 
-const styles = StyleSheet.create({
-  row: {
-    height: 56,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingLeft: 8,
-    paddingRight: 20,
-    borderRadius: 28,
-    backgroundColor: colors.card,
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.iconBg,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  // flex: 1 + flexShrink: 1 lets a long name shrink so the icon and the rate keep their size.
-  name: { flex: 1, flexShrink: 1, fontSize: 16, fontWeight: "600", color: colors.ink },
-  rate: { fontSize: 16, fontWeight: "600", color: colors.ink },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    row: {
+      height: 56,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+      paddingLeft: 8,
+      paddingRight: 20,
+      borderRadius: 28,
+      backgroundColor: colors.card,
+    },
+    icon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.iconBg,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    // flex: 1 + flexShrink: 1 lets a long name shrink so the icon and the rate keep their size.
+    name: { flex: 1, flexShrink: 1, fontSize: 16, fontWeight: "600", color: colors.ink },
+    rate: { fontSize: 16, fontWeight: "600", color: colors.ink },
+  });

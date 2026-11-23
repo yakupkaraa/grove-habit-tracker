@@ -4,7 +4,9 @@ import type { BottomTabBarProps } from "expo-router/js-tabs";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 
 type IconName = React.ComponentProps<typeof Ionicons>["name"];
 
@@ -15,6 +17,8 @@ const TAB_ICONS: Record<string, IconName> = {
 
 export function TabBar({ state, descriptors, navigateToTab }:BottomTabBarProps) {
   const insets = useSafeAreaInsets();
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
 
   // [Bugün] [FAB] [İstatistik]: FAB absolute olduğu için sadece 2 tab render edilir
   return (
@@ -42,44 +46,45 @@ export function TabBar({ state, descriptors, navigateToTab }:BottomTabBarProps) 
 
       <View style={styles.fabSlot} pointerEvents="box-none">
         <Pressable style={styles.fab} onPress={() => router.push("/habit/new")}>
-          <Ionicons name="add" size={32} color={colors.ink} />
+          <Ionicons name="add" size={32} color={colors.onLime} />
         </Pressable>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  bar: {
-    position: "absolute",
-    left: 20,
-    right: 20,
-    height: 68,
-    borderRadius: 34,
-    backgroundColor: colors.deep,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 28,
-  },
-  tab: {
-    width: 72,
-    height: 56,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-  },
-  label: { fontSize: 11 },
-  // Bar'ın paddingHorizontal'ı absolute yüzdeleri kaydırdığı için FAB, padding'siz tam genişlikte bir slot içinde ortalanır.
-  fabSlot: { position: "absolute", left: 0, right: 0, top: -26, alignItems: "center" },
-  fab: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: colors.lime,
-    borderWidth: 6,
-    borderColor: colors.bg, // FAB'ı bar'dan "oyulmuş" gösterir
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    bar: {
+      position: "absolute",
+      left: 20,
+      right: 20,
+      height: 68,
+      borderRadius: 34,
+      backgroundColor: colors.deep,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 28,
+    },
+    tab: {
+      width: 72,
+      height: 56,
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 4,
+    },
+    label: { fontSize: 11 },
+    // Bar'ın paddingHorizontal'ı absolute yüzdeleri kaydırdığı için FAB, padding'siz tam genişlikte bir slot içinde ortalanır.
+    fabSlot: { position: "absolute", left: 0, right: 0, top: -26, alignItems: "center" },
+    fab: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: colors.lime,
+      borderWidth: 6,
+      borderColor: colors.bg, // FAB'ı bar'dan "oyulmuş" gösterir
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });

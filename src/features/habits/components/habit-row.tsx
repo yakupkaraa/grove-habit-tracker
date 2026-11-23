@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { colors } from "@/theme/colors";
+import type { Palette } from "@/theme/colors";
+import { useColors } from "@/theme/use-colors";
+import { useThemedStyles } from "@/theme/use-themed-styles";
 import { formatRepeatDays } from "../utils/repeat-label";
 import type { TodayItem } from "../utils/today";
 
@@ -23,6 +25,8 @@ function buildSubtitle({ habit, streak }: TodayItem): string {
 
 export const HabitRow = memo(function HabitRow({ item, onToggle, onOpen }: HabitRowProps) {
   const { habit } = item;
+  const colors = useColors();
+  const styles = useThemedStyles(createStyles);
 
   return (
     <View style={styles.row}>
@@ -59,38 +63,39 @@ export const HabitRow = memo(function HabitRow({ item, onToggle, onOpen }: Habit
   );
 });
 
-const styles = StyleSheet.create({
-  row: {
-    height: 56,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingLeft: 8,
-    paddingRight: 10,
-    borderRadius: 28,
-    backgroundColor: colors.card,
-  },
-  body: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.iconBg,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  // flex: 1 + flexShrink: 1 lets the text column shrink so the icon and the check circle keep their size.
-  texts: { flex: 1, flexShrink: 1 },
-  name: { fontSize: 16, fontWeight: "600", color: colors.ink },
-  subtitle: { fontSize: 12, color: colors.muted },
-  check: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderColor: colors.ring,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkDone: { backgroundColor: colors.deep, borderColor: colors.deep },
-});
+const createStyles = (colors: Palette) =>
+  StyleSheet.create({
+    row: {
+      height: 56,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+      paddingLeft: 8,
+      paddingRight: 10,
+      borderRadius: 28,
+      backgroundColor: colors.card,
+    },
+    body: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
+    icon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.iconBg,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    // flex: 1 + flexShrink: 1 lets the text column shrink so the icon and the check circle keep their size.
+    texts: { flex: 1, flexShrink: 1 },
+    name: { fontSize: 16, fontWeight: "600", color: colors.ink },
+    subtitle: { fontSize: 12, color: colors.muted },
+    check: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      borderWidth: 2,
+      borderColor: colors.ring,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    checkDone: { backgroundColor: colors.deep, borderColor: colors.deep },
+  });
