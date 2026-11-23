@@ -2,7 +2,6 @@
 export type { Completion, Habit, HabitIcon, Weekday } from "./types";
 export { addDays, toDateKey } from "./utils/dates";
 
-export { FilterChip } from "./components/filter-chip";
 export { HabitRow } from "./components/habit-row";
 export { SummaryCard } from "./components/summary-card";
 export { EditHabitScreen } from "./components/edit-habit-screen";

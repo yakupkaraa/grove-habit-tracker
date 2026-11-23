@@ -301,4 +301,13 @@ describe("TodayScreen", () => {
       params: { id: "water" },
     });
   });
+
+  it("opens the settings screen from the gear button", async () => {
+    await renderScreen();
+
+    const user = userEvent.setup();
+    await user.press(screen.getByRole("button", { name: "Ayarlar" }));
+
+    expect(router.push).toHaveBeenCalledWith("/settings");
+  });
 });

@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useCallback, useMemo, useState } from "react";
 import { FlatList, type ListRenderItemInfo, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FilterChip } from "@/components/ui/filter-chip";
 import { colors } from "@/theme/colors";
 import { useHydrated } from "../hooks/use-hydrated";
 import { useTodayHabits } from "../hooks/use-today-habits";
@@ -12,7 +13,6 @@ import {
   type TimeOfDayFilter,
   type TodayItem,
 } from "../utils/today";
-import { FilterChip } from "./filter-chip";
 import { HabitRow } from "./habit-row";
 import { SummaryCard } from "./summary-card";
 import { TodayEmptyState } from "./today-empty-state";
@@ -30,8 +30,7 @@ const FILTERS: { value: TimeOfDayFilter; label: string }[] = [
   { value: "evening", label: "Akşam" },
 ];
 
-// There is no /settings route yet; wire it here once it exists.
-const openSettings = () => {};
+const openSettings = () => router.push("/settings");
 const openNewHabit = () => router.push("/habit/new");
 // Module-level, so its identity is stable and the memoized rows never re-render for it.
 const openHabit = (habitId: string) =>
