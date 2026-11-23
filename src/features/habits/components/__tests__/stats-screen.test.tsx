@@ -102,15 +102,21 @@ describe("StatsScreen", () => {
     expect(router.push).toHaveBeenCalledWith("/habit/new");
   });
 
-  it("describes the daily chart as one element for the selected range", async () => {
+  it("describes the daily chart with its data as one element for the selected range", async () => {
     seedStore([makeHabit("a")], doneEveryDay("a", "2026-11-14"));
     await renderScreen();
-    expect(screen.getByRole("image", { name: "Günlük tamamlanma, son 7 gün" })).toBeTruthy();
+    expect(
+      screen.getByRole("image", {
+        name: "Perşembe 0/1, Cuma 0/1, Cumartesi 1/1, Pazar 1/1, Pazartesi 1/1, Salı 1/1, Çarşamba 1/1",
+      }),
+    ).toBeTruthy();
 
     const user = userEvent.setup();
     await user.press(screen.getByRole("button", { name: "30 gün" }));
 
-    expect(screen.getByRole("image", { name: "Günlük tamamlanma, son 30 gün" })).toBeTruthy();
+    expect(
+      screen.getByRole("image", { name: "Son 30 gün, 30 planlı günden 5'i tamamlandı" }),
+    ).toBeTruthy();
   });
 
   it("shows a message instead of the chart when no day has been planned in the range", async () => {

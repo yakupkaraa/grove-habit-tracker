@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "@/theme/colors";
 import { useHydrated } from "../hooks/use-hydrated";
 import { useHabitStore } from "../store/habit-store";
+import { describeCompletionDays } from "../utils/describe-completion-days";
 import { formatPercent } from "../utils/format-percent";
 import { getStatsOverview } from "../utils/stats-overview";
 import { CompletionBars } from "./completion-bars";
@@ -98,7 +99,7 @@ export function StatsScreen({ today }: StatsScreenProps) {
             ) : (
               <CompletionBars
                 days={overview.days}
-                label={`Günlük tamamlanma, son ${rangeDays} gün`}
+                label={describeCompletionDays(overview.days)}
               />
             )}
           </View>
