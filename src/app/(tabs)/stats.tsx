@@ -1,21 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
-
-import { colors } from "@/theme/colors";
+import { StatsScreen } from "@/features/habits";
+import { useToday } from "@/hooks/use-today";
 
 export default function Stats() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.text}>İlerleme</Text>
-    </View>
-  );
+  return <StatsScreen today={useToday()} />;
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.bg,
-  },
-  text: { fontSize: 24, fontWeight: "600", color: colors.ink },
-});

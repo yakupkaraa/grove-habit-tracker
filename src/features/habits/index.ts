@@ -8,6 +8,7 @@ export { SummaryCard } from "./components/summary-card";
 export { EditHabitScreen } from "./components/edit-habit-screen";
 export { HabitDetailScreen } from "./components/habit-detail-screen";
 export { HabitFormScreen } from "./components/habit-form-screen";
+export { StatsScreen } from "./components/stats-screen";
 export { TodayEmptyState } from "./components/today-empty-state";
 export { TodayHeader } from "./components/today-header";
 export { TodayScreen } from "./components/today-screen";

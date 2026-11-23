@@ -10,9 +10,14 @@ const PERCENT = 100;
 type ProgressRingSceneProps = {
   progress: number; // 0..1
   size: number;
+  label?: string;
 };
 
-export function ProgressRingScene({ progress: rawProgress, size }: ProgressRingSceneProps) {
+export function ProgressRingScene({
+  progress: rawProgress,
+  size,
+  label = "Günlük ilerleme",
+}: ProgressRingSceneProps) {
   const progress = Math.min(1, Math.max(0, rawProgress));
   const radius = (size - STROKE_WIDTH) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -24,7 +29,7 @@ export function ProgressRingScene({ progress: rawProgress, size }: ProgressRingS
     <View
       accessible
       accessibilityRole="progressbar"
-      accessibilityLabel="Günlük ilerleme"
+      accessibilityLabel={label}
       accessibilityValue={{ min: 0, max: PERCENT, now: percent }}
       style={{ width: size, height: size }}
     >

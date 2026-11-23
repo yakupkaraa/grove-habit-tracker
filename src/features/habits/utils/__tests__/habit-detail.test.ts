@@ -49,6 +49,25 @@ describe("getHabitDetail", () => {
     expect(detail.rate).toBeCloseTo(27 / 30);
   });
 
+  it("uses the given window length instead of 30 days", () => {
+    const habit = makeHabit("a", { createdAt: "2026-01-01" });
+    const completions = doneEveryDay("a", "2026-11-12", TODAY);
+
+    const detail = getHabitDetail(habit, completions, TODAY, 7);
+
+    expect(detail.rate).toBe(1);
+  });
+
+  it("returns the planned and done day counts of the window", () => {
+    const habit = makeHabit("a", { createdAt: "2026-01-01" });
+    const completions = doneEveryDay("a", "2026-11-14", TODAY);
+
+    const detail = getHabitDetail(habit, completions, TODAY, 7);
+
+    expect(detail.plannedDays).toBe(7);
+    expect(detail.doneDays).toBe(5);
+  });
+
   it("does not count a pending today as a miss", () => {
     const completions = doneEveryDay("a", "2026-10-20", "2026-11-17");
 

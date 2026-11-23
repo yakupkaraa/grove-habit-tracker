@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RoundIconButton } from "@/components/ui/round-icon-button";
 import { colors } from "@/theme/colors";
 import { useHabitStore } from "../store/habit-store";
+import { formatPercent } from "../utils/format-percent";
 import { getHabitDetail } from "../utils/habit-detail";
 import { formatRepeatDays } from "../utils/repeat-label";
 import { HabitInfoRow } from "./habit-info-row";
@@ -14,7 +15,6 @@ import { HabitStat } from "./habit-stat";
 const SCREEN_PADDING = 20;
 const TOP_GAP = 8;
 const SECTION_GAP = 14;
-const PERCENT = 100;
 
 type HabitDetailScreenProps = {
   id: string;
@@ -32,8 +32,6 @@ export function HabitDetailScreen({ id, today }: HabitDetailScreenProps) {
   );
 
   if (!habit || !detail) return null;
-
-  const rate = detail.rate === null ? "—" : `%${Math.round(detail.rate * PERCENT)}`;
 
   // removeHabit also drops the habit's completions, so nothing is left orphaned.
   const deleteHabit = () => {
@@ -97,7 +95,7 @@ export function HabitDetailScreen({ id, today }: HabitDetailScreenProps) {
         <View style={styles.stats}>
           <HabitStat label="Mevcut seri" value={`${detail.currentStreak} gün`} />
           <HabitStat label="En uzun seri" value={`${detail.longestStreak} gün`} />
-          <HabitStat label="Başarı (30 gün)" value={rate} />
+          <HabitStat label="Başarı (30 gün)" value={formatPercent(detail.rate)} />
         </View>
         <View style={styles.info}>
           <HabitInfoRow label="Tekrar" value={formatRepeatDays(habit.repeatDays)} />
