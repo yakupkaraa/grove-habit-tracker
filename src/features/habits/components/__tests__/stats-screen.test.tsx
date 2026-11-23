@@ -115,7 +115,7 @@ describe("StatsScreen", () => {
     await user.press(screen.getByRole("button", { name: "30 gün" }));
 
     expect(
-      screen.getByRole("image", { name: "Son 30 gün, 30 planlı günden 5'i tamamlandı" }),
+      screen.getByRole("image", { name: "Son 30 gün: 30 planlı gün, 5 tamamlandı." }),
     ).toBeTruthy();
   });
 

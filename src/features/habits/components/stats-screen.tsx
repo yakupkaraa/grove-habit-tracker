@@ -99,7 +99,7 @@ export function StatsScreen({ today }: StatsScreenProps) {
             ) : (
               <CompletionBars
                 days={overview.days}
-                label={describeCompletionDays(overview.days)}
+                label={describeCompletionDays(overview.days, overview)}
               />
             )}
           </View>
