@@ -305,6 +305,37 @@ describe("toggleCompletion", () => {
   });
 });
 
+describe("clearAllData", () => {
+  it("removes every habit and completion", () => {
+    const store = setup();
+    store.getState().addHabit(input);
+    store.getState().addHabit({ ...input, name: "Kitap oku" });
+    store.getState().toggleCompletion("id-1", "2026-11-18");
+    store.getState().toggleCompletion("id-2", "2026-11-17");
+
+    store.getState().clearAllData();
+
+    expect(store.getState().habits).toEqual([]);
+    expect(store.getState().completions).toEqual([]);
+  });
+
+  it("persists the empty state, so a restart does not bring the data back", async () => {
+    const store = setup();
+    store.getState().addHabit(input);
+    store.getState().toggleCompletion("id-1", "2026-11-18");
+    await nextTick();
+
+    store.getState().clearAllData();
+    await nextTick();
+    const restarted = setup();
+    await nextTick();
+
+    expect(restarted.getState().habits).toEqual([]);
+    expect(restarted.getState().completions).toEqual([]);
+    expect(restarted.getState().hydrated).toBe(true);
+  });
+});
+
 describe("persist", () => {
   it("writes habits and completions to storage under the persist key", async () => {
     const store = setup();

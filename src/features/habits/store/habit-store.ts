@@ -21,6 +21,7 @@ type HabitActions = {
   removeHabit: (id: string) => void;
   updateHabit: (id: string, patch: HabitPatch) => void;
   toggleCompletion: (habitId: string, date: string) => void;
+  clearAllData: () => void;
 };
 
 type StoreDeps = {
@@ -124,6 +125,9 @@ export function createHabitStore(deps: Partial<StoreDeps> = {}) {
               ],
             };
           }),
+
+        // Keeps `hydrated`: the empty state is written through persist like any other change.
+        clearAllData: () => set(EMPTY_STATE),
 
         removeHabit: (id) =>
           set((state) => ({
